@@ -28,4 +28,14 @@ wineControllers.create = async (req, res) => {
     }
 }
 
+wineControllers.index = async (req, res) => {
+    try {
+        const wine = await models.wine.findAll()
+
+        res.json((wine))
+    }catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = wineControllers
