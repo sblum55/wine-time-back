@@ -38,4 +38,17 @@ wineControllers.index = async (req, res) => {
     }
 }
 
+wineControllers.find = async (req, res) => {
+    try {
+        const wine = await models.wine.findOne ({
+            where: {
+                id: req.params.id
+            }
+        })
+        res.json({wine})
+    }catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = wineControllers
