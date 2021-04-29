@@ -5,5 +5,7 @@ const wineControllers = require('../controllers/WineControllers')
 wineRoutes.post('/', wineControllers.create)
 wineRoutes.get('/allwines', wineControllers.index)
 wineRoutes.get('/allwines/:id', wineControllers.find)
+wineRoutes.delete('/allwines/:id', wineControllers.destroy)
+wineRoutes.put('/allwines/:id', wineControllers.update)
 
 module.exports = wineRoutes
