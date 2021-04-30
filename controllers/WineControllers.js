@@ -41,6 +41,7 @@ wineControllers.index = async (req, res) => {
 
 wineControllers.find = async (req, res) => {
     try {
+        console.log('this was hit');
         const wine = await models.wine.findOne ({
             where: {
                 id: req.params.id
@@ -70,7 +71,7 @@ wineControllers.destroy = async (req, res) => {
 }
 
 wineControllers.update = async (req, res) => {
-    // console.log(req.params);
+    console.log(req.params);
     try {
         const wine = await models.wine.findOne({
             where: {
@@ -78,7 +79,7 @@ wineControllers.update = async (req, res) => {
             }
         })
 
-        // console.log(wine);
+        console.log(wine);
 
         await wine.update({
             name: req.body.name,
@@ -88,6 +89,8 @@ wineControllers.update = async (req, res) => {
             description: req.body.description,
             image: req.body.image
         })
+
+        console.log('made it here', req.body);
 
         res.json({wine, message: 'wine updated successfully'})
 
