@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+require('dotenv').config()
 
 app.use(require('morgan')('tiny'))
 const routesReport = require('rowdy-logger').begin(app)

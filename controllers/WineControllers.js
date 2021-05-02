@@ -1,12 +1,18 @@
 const models = require('../models')
+const jwt = require('jsonwebtoken')
 
 const wineControllers = {}
 
 wineControllers.create = async (req, res) => {
+    console.log(req.headers);
     try {
+        const encryptedId = req.headers.authorization
+        console.log(encryptedId);
+        const decryptedId = jwt.verify(encryptedId, process.env.JWT_SECRET)
+        console.log(decryptedId);
         const user = await models.user.findOne ({
             where: {
-                id: req.headers.authorization
+                id: decryptedId.userId
             }
         })
 
@@ -45,7 +51,12 @@ wineControllers.find = async (req, res) => {
         const wine = await models.wine.findOne ({
             where: {
                 id: req.params.id
-            }
+            },
+            include: [
+                {model: models.user},
+                {model: models.comment,
+                    include: models.user}
+            ]
         })
         res.json({wine})
     }catch (error) {
@@ -93,6 +104,44 @@ wineControllers.update = async (req, res) => {
         console.log('made it here', req.body);
 
         res.json({wine, message: 'wine updated successfully'})
+
+    }catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.mesaage })
+    }
+}
+
+wineControllers.createComments = async (req, res) => {
+    console.log(req.headers, req.params);
+    try {
+        const encryptedId = req.headers.authorization
+        const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+        const user = await models.user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+        console.log('found user', user);
+
+        const wine = await models.wine.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+
+        console.log('found wine', wine);
+
+        const comment = await models.comment.create({
+            title: req.body.title,
+            description: req.body.description
+        })
+
+        console.log('found comment', comment);
+
+        await comment.setUser(user)
+        await comment.setWine(wine)
+
+        res.json({ comment })
 
     }catch (error) {
         console.log(error);
