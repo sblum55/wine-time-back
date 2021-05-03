@@ -37,7 +37,9 @@ wineControllers.create = async (req, res) => {
 
 wineControllers.index = async (req, res) => {
     try {
-        const wine = await models.wine.findAll()
+        const wine = await models.wine.findAll({
+            order: [['id', 'ASC']]
+        })
 
         res.json((wine))
     }catch (error) {
