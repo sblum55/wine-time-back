@@ -160,7 +160,11 @@ wineControllers.getAllComments = async (req, res) => {
             }
         })
 
-        const comment = await models.comment.findAll()
+        const comment = await models.comment.findAll({
+            where: {
+                wineId: req.params.id
+            }
+        })
 
         res.json({ wine, comment })
 
