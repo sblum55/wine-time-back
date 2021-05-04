@@ -8,5 +8,6 @@ wineRoutes.get('/allwines/:id', wineControllers.find)
 wineRoutes.delete('/allwines/:id', wineControllers.destroy)
 wineRoutes.put('/allwines/:id', wineControllers.update)
 wineRoutes.post('/allwines/:id/comments', wineControllers.createComments)
+wineRoutes.get('/allwines/:id/comments', wineControllers.getAllComments)
 
 module.exports = wineRoutes

@@ -150,5 +150,23 @@ wineControllers.createComments = async (req, res) => {
         res.status(400).json({ error: error.mesaage })
     }
 }
+
+wineControllers.getAllComments = async (req, res) => {
+    try {
+
+        const wine = await models.wine.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+
+        const comment = await models.comment.findAll()
+
+        res.json({ wine, comment })
+
+    }catch (error) {
+        console.log(error);
+    }
+}
  
 module.exports = wineControllers
